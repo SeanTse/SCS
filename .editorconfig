@@ -1,0 +1,4 @@
+﻿[*.{cs,vb}]
+
+# IDE0045: 转换为条件表达式
+dotnet_style_prefer_conditional_expression_over_assignment = true
