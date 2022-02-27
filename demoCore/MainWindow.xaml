@@ -67,21 +67,17 @@
                             </TransformGroup>
                         </Canvas.LayoutTransform>
                     </Canvas>-->
-                    <Viewbox Stretch="Uniform">
-                        <Image x:Name="mImage" 
+                    <Image x:Name="mImage" 
                            Source="{Binding Image}" 
                            Stretch="None"
                            MouseMove="Image_MouseMove"
                            RenderOptions.BitmapScalingMode="NearestNeighbor">
-                            <Image.LayoutTransform>
-                                <TransformGroup>
-                                    <ScaleTransform x:Name="mScale" ScaleX="{Binding Scale}" ScaleY="{Binding Scale}"/>
-                                </TransformGroup>
-                            </Image.LayoutTransform>
-                        </Image>
-                    </Viewbox>
-
-                   
+                        <Image.LayoutTransform>
+                            <TransformGroup>
+                                <ScaleTransform x:Name="mScale" ScaleX="{Binding Scale}" ScaleY="{Binding Scale}"/>
+                            </TransformGroup>
+                        </Image.LayoutTransform>
+                    </Image>
                 </Border>
             </ScrollViewer>
         </Grid>
