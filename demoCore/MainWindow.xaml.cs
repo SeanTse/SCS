@@ -64,26 +64,7 @@ namespace demoCore
         {
             Point pointToImage = e.GetPosition(mImage);
             Point pointToViewer = e.GetPosition(mViewer);
-            double step;
-            double scaleLevel = iv.Scale / iv.MinimumScale;
-            if (scaleLevel <= 1.5)
-            {
-                step = 0.001;
-            }
-            else if (scaleLevel is > 1.5 and <= 2)
-            {
-                step = 0.002;
-            }
-            else if (scaleLevel is > 2 and <= 3)
-            {
-                step = 0.003;
-            }
-            else
-            {
-                step = 0.005;
-            }
-
-            double delta = e.Delta * step;
+            double delta = e.Delta * 0.001;
             if (iv.Scale + delta < iv.MinimumScale)
             {
                 iv.Scale = iv.MinimumScale;

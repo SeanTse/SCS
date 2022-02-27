@@ -58,8 +58,8 @@ namespace demoCore.ViewModel
             {
                 return 1;
             }
-            double sY = Y / Image.PixelHeight;
-            double sX = X / Image.PixelWidth;
+            double sY = Y / Image.Height;
+            double sX = X / Image.Width;
             return Math.Min(Math.Min(sX, sY), 1);
         }
 
