@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:demoCore.ViewModel"
+        xmlns:ViewModel="clr-namespace:demoCore.ViewModel"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d" StateChanged="Window_StateChanged"
         AllowsTransparency="True" WindowStyle="None" Style="{StaticResource WindowStyle}" BorderThickness="7" MinWidth="450" MinHeight="300"
@@ -12,7 +12,7 @@
         <DropShadowEffect BlurRadius="10" ShadowDepth="0" Color="Black"/>
     </Window.Effect>
     <Window.DataContext>
-        <local:ImageViewer x:Name="iv"/>
+        <ViewModel:ImageViewer x:Name="iv"/>
     </Window.DataContext>
     <Grid Background="{StaticResource WinBgColor}">
         <Grid.RowDefinitions>
@@ -29,9 +29,9 @@
                 <TextBlock Text="SCS" Margin="8 0 0 0" VerticalAlignment="Center" Foreground="White"/>
             </StackPanel>
             <StackPanel Grid.Column="1" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
-                <Button x:Name="btn_minimize"  Click="Btn_minimize_Click" Style="{StaticResource TitleButtonStyle}" Content="&#xE921;" Foreground="White" FocusVisualStyle="{x:Null}"/>
-                <Button x:Name="btn_maximize" Click="Btn_maximize_Click"  Style="{StaticResource TitleButtonStyle}" Content="&#xE922;" Foreground="White" FocusVisualStyle="{x:Null}"/>
-                <Button x:Name="btn_close" Click="Btn_close_Click" Style="{StaticResource TitleButtonStyle}" Content="&#xE8BB;" Foreground="White" FocusVisualStyle="{x:Null}"/>
+                <Button x:Name="Btn_minimize"  Click="Btn_minimize_Click" Style="{StaticResource TitleButtonStyle}" Content="&#xE921;" Foreground="White" FocusVisualStyle="{x:Null}"/>
+                <Button x:Name="Btn_maximize" Click="Btn_maximize_Click"  Style="{StaticResource TitleButtonStyle}" Content="&#xE922;" Foreground="White" FocusVisualStyle="{x:Null}"/>
+                <Button x:Name="Btn_close" Click="Btn_close_Click" Style="{StaticResource TitleButtonStyle}" Content="&#xE8BB;" Foreground="White" FocusVisualStyle="{x:Null}"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
@@ -41,12 +41,10 @@
             </Grid.ColumnDefinitions>
             <Menu Grid.Column="0" Background="{StaticResource WinBgColor}" ItemContainerStyle="{StaticResource MenuItemStyle}">
                 <MenuItem Header="文件" >
-                    <MenuItem Header="打开" x:Name="Menu_Open_Image" Click="Menu_Open_Image_Click"/>
+                    <MenuItem Header="打开" Command="{Binding CmdOpenImage}" CommandParameter="{Binding ElementName=mViewer}"/>
                 </MenuItem>
             </Menu>
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                <!--<TextBlock Text="{Binding Scale}" Margin="0 0 8 0" ToolTip="缩放系数" Foreground="White" />
-                <TextBlock Text="{Binding MinimumScale}" Margin="0 0 8 0" ToolTip="最小缩放系数" Foreground="White" />-->
                 <TextBlock Text="{Binding MousePosition}" Margin="0 0 8 0" ToolTip="鼠标位置" Foreground="White"/>
             </StackPanel>
             
@@ -57,16 +55,10 @@
                 <ColumnDefinition Width="250"/>
             </Grid.ColumnDefinitions>
             <ScrollViewer x:Name="mViewer" Grid.Column="0" Margin="8 0 0 8" SizeChanged="Viewer_SizeChanged" Template="{StaticResource ScrollViewerStyle}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FocusVisualStyle="{x:Null}">
-                <Border x:Name="mBorder" MouseWheel="Border_MouseWheel" MouseMove="Border_MouseMove"
-                        Background="{StaticResource PicBgColor}" SnapsToDevicePixels="True">
-                    <!--<Canvas x:Name="mImage" Width="{Binding Path=Image.PixelWidth }" Height="{Binding Path=Image.PixelHeight}">
-                        <Image Source="{Binding Image}" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                        <Canvas.LayoutTransform>
-                            <TransformGroup>
-                                <ScaleTransform x:Name="mScale" ScaleX="{Binding Scale}" ScaleY="{Binding Scale}"/>
-                            </TransformGroup>
-                        </Canvas.LayoutTransform>
-                    </Canvas>-->
+                <Border x:Name="mBorder" Background="{StaticResource PicBgColor}" SnapsToDevicePixels="True"
+                        MouseWheel="Border_MouseWheel" 
+                        MouseMove="Border_MouseMove"
+                >
                     <Image x:Name="mImage" 
                            Source="{Binding Image}" 
                            Stretch="None"

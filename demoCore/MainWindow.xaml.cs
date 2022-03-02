@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using demoCore.Model;
 
 namespace demoCore
 {
@@ -34,7 +33,7 @@ namespace demoCore
 
         private void Window_StateChanged(object sender, EventArgs e)
         {
-            btn_maximize.Content = WindowState == WindowState.Maximized ? "\xE923" : "\xE922";
+            Btn_maximize.Content = WindowState == WindowState.Maximized ? "\xE923" : "\xE922";
 
         }
         private void Viewer_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -46,21 +45,7 @@ namespace demoCore
             }
         }
 
-        private void Menu_Open_Image_Click(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Win32.OpenFileDialog openFileDlg = new();
-            openFileDlg.InitialDirectory = "C:\\Users\\Sean\\Desktop";
-            openFileDlg.Filter = "image|*.png;*.jpg;*.tiff|All|*.*";
-            if ((bool)openFileDlg.ShowDialog())
-            {
-                iv.ImageName = openFileDlg.FileName;
-                iv.Image = Photo.OpenLocalImage(openFileDlg.FileName);
-                //初始化缩放比例，使画面全部出现在ScrollViewer里
-                iv.MinimumScale = iv.Scale = iv.FittingScale(mViewer.ActualWidth, mViewer.ActualHeight);
-            }
-        }
-
-        private void Border_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        private void Border_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             Point pointToImage = e.GetPosition(mImage);
             Point pointToViewer = e.GetPosition(mViewer);
