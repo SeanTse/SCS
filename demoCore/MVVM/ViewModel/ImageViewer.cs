@@ -71,7 +71,7 @@ namespace demoCore.ViewModel
             }
         }
 
-        public ICommand CmdOpenImage { get; set; }
+        public ICommand CmdOpenImage { get; private set; }
         #endregion
 
         #region Command methods

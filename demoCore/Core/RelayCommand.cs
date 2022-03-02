@@ -14,6 +14,7 @@ namespace demoCore.Core
 
         private readonly Action<T> _execute;
         private readonly Func<T, bool> _canExecute;
+        private EventHandler _requerySuggestedLocal;
 
         #endregion
 
@@ -55,14 +56,56 @@ namespace demoCore.Core
         {
             return _canExecute == null || _canExecute((T)parameter);
         }
-
-        ///<summary>
-        ///Occurs when changes occur that affect whether or not the command should execute.
-        ///</summary>
+        /// <summary>
+        /// Occurs when changes occur that affect whether the command should execute.
+        /// </summary>
         public event EventHandler CanExecuteChanged
         {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
+            add
+            {
+                if (_canExecute != null)
+                {
+                    // add event handler to local handler backing field in a thread safe manner
+                    EventHandler handler2;
+                    EventHandler canExecuteChanged = _requerySuggestedLocal;
+
+                    do
+                    {
+                        handler2 = canExecuteChanged;
+                        EventHandler handler3 = (EventHandler)Delegate.Combine(handler2, value);
+                        canExecuteChanged = System.Threading.Interlocked.CompareExchange<EventHandler>(
+                            ref _requerySuggestedLocal,
+                            handler3,
+                            handler2);
+                    }
+                    while (canExecuteChanged != handler2);
+
+                    CommandManager.RequerySuggested += value;
+                }
+            }
+
+            remove
+            {
+                if (_canExecute != null)
+                {
+                    // removes an event handler from local backing field in a thread safe manner
+                    EventHandler handler2;
+                    EventHandler canExecuteChanged = this._requerySuggestedLocal;
+
+                    do
+                    {
+                        handler2 = canExecuteChanged;
+                        EventHandler handler3 = (EventHandler)Delegate.Remove(handler2, value);
+                        canExecuteChanged = System.Threading.Interlocked.CompareExchange<EventHandler>(
+                            ref this._requerySuggestedLocal,
+                            handler3,
+                            handler2);
+                    }
+                    while (canExecuteChanged != handler2);
+
+                    CommandManager.RequerySuggested -= value;
+                }
+            }
         }
 
         ///<summary>
