@@ -13,7 +13,7 @@ namespace demoCore.Core
         #region Fields
 
         private readonly Action<T> _execute;
-        private readonly Predicate<T> _canExecute;
+        private readonly Func<T, bool> _canExecute;
 
         #endregion
 
@@ -34,7 +34,7 @@ namespace demoCore.Core
         /// </summary>
         /// <param name="execute">The execution logic.</param>
         /// <param name="canExecute">The execution status logic.</param>
-        public RelayCommand(Action<T> execute, Predicate<T> canExecute)
+        public RelayCommand(Action<T> execute, Func<T, bool> canExecute)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = canExecute;

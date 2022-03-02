@@ -79,7 +79,7 @@ namespace demoCore.ViewModel
         public void OpenImage(Control ctl)
         {
             Microsoft.Win32.OpenFileDialog openFileDlg = new();
-            openFileDlg.InitialDirectory = "C:\\Users\\Sean\\Desktop";
+            openFileDlg.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             openFileDlg.Filter = "image|*.png;*.jpg;*.tiff|All|*.*";
             if ((bool)openFileDlg.ShowDialog())
             {
