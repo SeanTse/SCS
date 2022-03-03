@@ -76,7 +76,7 @@ namespace demoCore.ViewModel
 
         #region Command methods
 
-        public void OpenImage(Control ctl)
+        public void OpenImage(Control container)
         {
             Microsoft.Win32.OpenFileDialog openFileDlg = new();
             openFileDlg.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -85,7 +85,7 @@ namespace demoCore.ViewModel
             {
                 ImageName = openFileDlg.FileName;
                 Image = OpenLocalImage(openFileDlg.FileName);
-                MinimumScale = Scale = FittingScale(ctl.ActualWidth, ctl.ActualHeight);
+                MinimumScale = Scale = FittingScale(container.ActualWidth, container.ActualHeight);
             }
         }
         #endregion
@@ -100,7 +100,6 @@ namespace demoCore.ViewModel
             double sX = X / Image.Width;
             return Math.Min(Math.Min(sX, sY), 1);
         }
-
 
 
         private static BitmapSource OpenLocalImage(string path)

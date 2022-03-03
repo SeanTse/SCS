@@ -73,7 +73,7 @@ namespace demoCore.Core
                     {
                         handler2 = canExecuteChanged;
                         EventHandler handler3 = (EventHandler)Delegate.Combine(handler2, value);
-                        canExecuteChanged = System.Threading.Interlocked.CompareExchange<EventHandler>(
+                        canExecuteChanged = System.Threading.Interlocked.CompareExchange(
                             ref _requerySuggestedLocal,
                             handler3,
                             handler2);
