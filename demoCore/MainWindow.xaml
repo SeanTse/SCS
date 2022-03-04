@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ViewModel="clr-namespace:demoCore.ViewModel"
-        xmlns:Behavior="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:ViewModel="clr-namespace:demoCore.MVVM.ViewModel"
+        xmlns:Core="clr-namespace:demoCore.Core"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d" StateChanged="Window_StateChanged"
         AllowsTransparency="True" WindowStyle="None" Style="{StaticResource WindowStyle}" BorderThickness="7" MinWidth="450" MinHeight="300"
@@ -15,6 +15,9 @@
     <Window.DataContext>
         <ViewModel:ImageViewer x:Name="iv"/>
     </Window.DataContext>
+    <Window.Resources>
+        <Core:DisplayPointConverters x:Key="DisplayPointConverter"/>
+    </Window.Resources>
     <Grid Background="{StaticResource WinBgColor}">
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
@@ -42,12 +45,12 @@
             </Grid.ColumnDefinitions>
             <Menu Grid.Column="0" Background="{StaticResource WinBgColor}" ItemContainerStyle="{StaticResource MenuItemStyle}">
                 <MenuItem Header="文件" >
-                    <MenuItem Header="打开" Command="{Binding CmdOpenImage}" CommandParameter="{Binding ElementName=mViewer}">
+                    <MenuItem Header="打开" Command="{Binding CmdExploreImage}" CommandParameter="{Binding ElementName=mViewer}">
                     </MenuItem>
                 </MenuItem>
             </Menu>
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                <TextBlock Text="{Binding MousePosition}" Margin="0 0 8 0" ToolTip="鼠标位置" Foreground="White"/>
+                <TextBlock Text="{Binding PickPosition, Converter={StaticResource DisplayPointConverter}}" Margin="0 0 8 0" ToolTip="点击位置" Foreground="White"/>
             </StackPanel>
             
         </Grid>
@@ -56,15 +59,17 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="250"/>
             </Grid.ColumnDefinitions>
-            <ScrollViewer x:Name="mViewer" Grid.Column="0" Margin="8 0 0 8" SizeChanged="Viewer_SizeChanged" Template="{StaticResource ScrollViewerStyle}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FocusVisualStyle="{x:Null}">
+            <ScrollViewer x:Name="mViewer" Grid.Column="0" Margin="8 0 0 8" 
+                          SizeChanged="Viewer_SizeChanged"  
+                          MouseDoubleClick="mViewer_MouseDoubleClick"
+                          Template="{StaticResource ScrollViewerStyle}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FocusVisualStyle="{x:Null}">
                 <Border x:Name="mBorder" Background="{StaticResource PicBgColor}" SnapsToDevicePixels="True"
-                        MouseWheel="Border_MouseWheel" 
-                        MouseMove="Border_MouseMove"
+                        MouseWheel="ZoomImage"
+                        MouseMove="MoveImage"
                 >
                     <Image x:Name="mImage" 
                            Source="{Binding Image}" 
                            Stretch="None"
-                           MouseMove="Image_MouseMove"
                            RenderOptions.BitmapScalingMode="NearestNeighbor">
                         <Image.LayoutTransform>
                             <TransformGroup>

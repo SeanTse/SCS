@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace demoCore
 {
@@ -10,7 +11,7 @@ namespace demoCore
     public partial class MainWindow : Window
     {
         private Point LastPosition;
-        private bool isPressed = false;
+        private bool isPressed;
         public MainWindow()
         {
             InitializeComponent();
@@ -45,55 +46,69 @@ namespace demoCore
             }
         }
 
-        private void Border_MouseWheel(object sender, MouseWheelEventArgs e)
+        private void ZoomImage(object sender, MouseWheelEventArgs e)
         {
-            Point pointToImage = e.GetPosition(mImage);
-            Point pointToViewer = e.GetPosition(mViewer);
-            double delta = e.Delta * 0.001;
-            if (iv.Scale + delta < iv.MinimumScale)
+            if (iv.Image != null)
             {
-                iv.Scale = iv.MinimumScale;
-                return;
-            }
-            iv.Scale += delta;
-            mViewer.ScrollToHorizontalOffset(pointToImage.X * iv.Scale - pointToViewer.X);
-            mViewer.ScrollToVerticalOffset(pointToImage.Y * iv.Scale - pointToViewer.Y);
-            e.Handled = true;
-        }
-
-        private void Image_MouseMove(object sender, MouseEventArgs e)
-        {
-            Point now = e.GetPosition(mImage);
-            now.X = (int)now.X;
-            now.Y = (int)now.Y;
-            iv.MousePosition = now.ToString();
-        }
-
-        private void Border_MouseMove(object sender, MouseEventArgs e)
-        {
-            if(e.LeftButton == MouseButtonState.Pressed)
-            {
-                if(isPressed)
+                Point pointToImage = e.GetPosition(mImage);
+                Point pointToViewer = e.GetPosition(mViewer);
+                double delta = e.Delta * 0.001;
+                if (iv.Scale + delta < iv.MinimumScale)
                 {
-                    Point now = e.GetPosition(mViewer);
-                    if (now != LastPosition)
+                    iv.Scale = iv.MinimumScale;
+                    return;
+                }
+                iv.Scale += delta;
+                mViewer.ScrollToHorizontalOffset(pointToImage.X * iv.Scale - pointToViewer.X);
+                mViewer.ScrollToVerticalOffset(pointToImage.Y * iv.Scale - pointToViewer.Y);
+                e.Handled = true;
+            }
+        }
+
+        private void MoveImage(object sender, MouseEventArgs e)
+        {
+            if (iv.Image != null)
+            {
+                if (e.LeftButton == MouseButtonState.Pressed)
+                {
+                    if (isPressed)
                     {
-                        mViewer.ScrollToHorizontalOffset(mViewer.HorizontalOffset + LastPosition.X - now.X);
-                        mViewer.ScrollToVerticalOffset(mViewer.VerticalOffset + LastPosition.Y - now.Y);
-                        LastPosition = now;
+                        Point now = e.GetPosition(mViewer);
+                        if (now != LastPosition)
+                        {
+                            mViewer.ScrollToHorizontalOffset(mViewer.HorizontalOffset + LastPosition.X - now.X);
+                            mViewer.ScrollToVerticalOffset(mViewer.VerticalOffset + LastPosition.Y - now.Y);
+                            LastPosition = now;
+                        }
+                    }
+                    else
+                    {
+                        LastPosition = e.GetPosition(mViewer);
+                        isPressed = true;
                     }
                 }
                 else
                 {
-                    LastPosition = e.GetPosition(mViewer);
-                    isPressed = true;
+                    isPressed = false;
                 }
-            }
-            else
-            {
-                isPressed = false;
             }
 
         }
+
+        private void mViewer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if(mImage!=null)
+            {
+                Point doubleClick = e.GetPosition(mImage);
+                HitTestResult result = VisualTreeHelper.HitTest(mImage, doubleClick);
+                if(result != null)
+                {
+                    iv.PickPosition = doubleClick;
+                }
+            }
+        }
     }
+
+
+
 }

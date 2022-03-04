@@ -2,36 +2,35 @@
 using System.Windows.Media.Imaging;
 using System;
 using System.Windows.Input;
-using System.IO;
+using demoCore.Util;
 using System.Windows.Controls;
+using System.Windows;
 
-namespace demoCore.ViewModel
+namespace demoCore.MVVM.ViewModel
 {
     public class ImageViewer : ObservableObjects
     {
-        private BitmapSource image;
+        private BitmapSource current_image;
         private double scale;
         private string name;
-        private string mouse_position;
+        private Point pick_position;
 
-        #region Constructor
         public ImageViewer()
         {
-            CmdOpenImage = new RelayCommand<Control>(new Action<Control>(OpenImage));
+            CmdExploreImage = new RelayCommand<Control>(new Action<Control>(ExploreImage));
         }
-        #endregion
 
-        #region Properties
+
         public BitmapSource Image
         {
-            get => image;
+            get => current_image;
             set
             {
-                if (image == value)
+                if (current_image == value)
                 {
                     return;
                 }
-                image = value;
+                current_image = value;
                 OnPropertyChanged("Image");
             }
         }
@@ -39,7 +38,7 @@ namespace demoCore.ViewModel
         public string ImageName
         {
             get => name;
-            set
+            internal set
             {
                 name = value;
                 OnPropertyChanged("ImageName");
@@ -61,22 +60,19 @@ namespace demoCore.ViewModel
         }
         public double MinimumScale { get; set; }
 
-        public string MousePosition
+        public Point PickPosition
         {
-            get => mouse_position;
+            get => pick_position;
             set
             {
-                mouse_position = value;
-                OnPropertyChanged("MousePosition");
+                pick_position = value;
+                OnPropertyChanged("PickPosition");
             }
         }
 
-        public ICommand CmdOpenImage { get; private set; }
-        #endregion
+        public ICommand CmdExploreImage { get; private set; }
 
-        #region Command methods
-
-        public void OpenImage(Control container)
+        private void ExploreImage(Control container)
         {
             Microsoft.Win32.OpenFileDialog openFileDlg = new();
             openFileDlg.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -84,11 +80,10 @@ namespace demoCore.ViewModel
             if ((bool)openFileDlg.ShowDialog())
             {
                 ImageName = openFileDlg.FileName;
-                Image = OpenLocalImage(openFileDlg.FileName);
+                Image = Utilities.OpenLocalImage(openFileDlg.FileName);
                 MinimumScale = Scale = FittingScale(container.ActualWidth, container.ActualHeight);
             }
         }
-        #endregion
 
         public double FittingScale(double X, double Y)
         {
@@ -99,28 +94,6 @@ namespace demoCore.ViewModel
             double sY = Y / Image.Height;
             double sX = X / Image.Width;
             return Math.Min(Math.Min(sX, sY), 1);
-        }
-
-
-        private static BitmapSource OpenLocalImage(string path)
-        {
-            try
-            {
-                BitmapImage bi = new();
-                bi.BeginInit();
-                bi.CacheOption = BitmapCacheOption.OnLoad;
-                using (Stream strm = new MemoryStream(File.ReadAllBytes(path)))
-                {
-                    bi.StreamSource = strm;
-                    bi.EndInit();
-                    bi.Freeze();
-                }
-                return bi;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
         }
     }
 }
