@@ -8,8 +8,8 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="ThumbFill" Property="Fill" Value="white"/>
-                            <Setter TargetName="ThumbFill" Property="Width" Value="18"/>
-                            <Setter TargetName="ThumbFill" Property="Height" Value="18"/>
+                            <Setter TargetName="ThumbFill" Property="Width" Value="20"/>
+                            <Setter TargetName="ThumbFill" Property="Height" Value="20"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -23,11 +23,6 @@
                     <Border x:Name="border" Height="12" >
                         <Border SnapsToDevicePixels="True" Background="{TemplateBinding Background}" Margin="0,5,0,5"/>
                     </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Height" Value="14"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
