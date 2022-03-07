@@ -9,8 +9,10 @@
             <SolidColorBrush x:Key="PicBgColor" Color="#2B2B2B"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="style/Window.xaml"/>
+                <ResourceDictionary Source="style/Button.xaml"/>
                 <ResourceDictionary Source="style/Menu.xaml"/>
                 <ResourceDictionary Source="style/ScrollViewer.xaml"/>
+                <ResourceDictionary Source="style/Slider.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
          

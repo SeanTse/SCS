@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "SCS_TEST": {
+      "commandName": "Project"
+    }
+  }
+}

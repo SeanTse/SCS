@@ -14,7 +14,6 @@ namespace demoCore.Core
             point.Y = Math.Round(point.Y);
             return point.ToString();
         }
-
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();

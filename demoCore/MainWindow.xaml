@@ -43,16 +43,17 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Menu Grid.Column="0" Background="{StaticResource WinBgColor}" ItemContainerStyle="{StaticResource MenuItemStyle}">
-                <MenuItem Header="文件" >
-                    <MenuItem Header="打开" Command="{Binding CmdExploreImage}" CommandParameter="{Binding ElementName=mViewer}">
-                    </MenuItem>
-                </MenuItem>
-            </Menu>
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Background="{StaticResource WinBgColor}" >
+                <Button ToolTip="选择图片" Command="{Binding CmdExploreImage}" CommandParameter="{Binding ElementName=mViewer}" Content="&#xE721;" Margin="8 0 8 0 " />
+                <TextBlock ToolTip="对比度" Text="&#xE793;" Foreground="White" VerticalAlignment="Center" Margin="0 0 8 0" FontFamily="Segoe MDL2 Assets" FontSize="18" SnapsToDevicePixels="True"/>
+                <Slider x:Name="ContrastSlider" Background="#282828" FontSize="15" Minimum="-100" Maximum="100" VerticalAlignment="Center" Width="240" Margin="0 0 8 0"/>
+                <TextBlock ToolTip="亮度" Text="&#xE706;" Foreground="White" VerticalAlignment="Center" Margin="0 0 8 0" FontFamily="Segoe MDL2 Assets" FontSize="18" SnapsToDevicePixels="True"/>
+                <Slider x:Name="BrightnessSlider" Background="#282828" FontSize="15" Minimum="-100" Maximum="100" VerticalAlignment="Center" Width="240" Margin="0 0 8 0"/>
+            </StackPanel>
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
                 <TextBlock Text="{Binding PickPosition, Converter={StaticResource DisplayPointConverter}}" Margin="0 0 8 0" ToolTip="点击位置" Foreground="White"/>
             </StackPanel>
-            
+
         </Grid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Landmarks>
+	<Landmark>
+		<Id>A</Id>
+		<Name>A point</Name>
+		<Symbol>A</Symbol>
+		<Description>Most concave point of anterior maxilla</Description>
+	</Landmark>
+	<Landmark>
+		<Id>S</Id>
+		<Name>Sella turcica</Name>
+		<Symbol>S</Symbol>
+		<Description>Midpoint of sella turcica</Description>
+	</Landmark>
+	<Landmark>
+		<Id>N</Id>
+		<Name>Nasion</Name>
+		<Symbol>N</Symbol>
+		<Description>Most anterior point on frontonasal suture</Description>
+	</Landmark>
+</Landmarks>
